@@ -1,0 +1,6 @@
+* implement cpop_error
+* finish error message sprintf
+* compile
+* rename
+* add cdeque
+** use instead of vector in slab
