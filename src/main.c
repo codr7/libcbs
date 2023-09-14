@@ -20,7 +20,13 @@ static void deque_test() {
   assert(d.length == n);
 
   for (int i = 0; i < n; i++) { assert(*(int *)cdeque_get(&d, i) == i); }
-  for (int i = n-1; i >= 0; i--) { assert(*(int *)cdeque_pop_back(&d) == i); }
+
+  for (int i = 0; i < 3; i++) { assert(*(int *)cdeque_pop_front(&d) == i); }
+  for (int i = n-1; i >= n-3; i--) { assert(*(int *)cdeque_pop_back(&d) == i); }
+  assert(d.length == n-6);
+
+  for (int i = 2; i >= 0; i--) { *(int *)cdeque_push_front(&d) = i; }
+  for (int i = 0; i < n-3; i++) { assert(*(int *)cdeque_get(&d, i) == i); }
 
   cdeque_deinit(&d);
 }

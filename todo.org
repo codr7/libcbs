@@ -1,4 +1,3 @@
-* use deque to build slab alloc?
 * add cset
 * add cstream
 * add ctree
