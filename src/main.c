@@ -20,6 +20,7 @@ static void deque_test() {
   assert(d.length == n);
 
   for (int i = 0; i < n; i++) { assert(*(int *)cdeque_get(&d, i) == i); }
+  for (int i = n-1; i >= 0; i--) { assert(*(int *)cdeque_pop_back(&d) == i); }
 
   cdeque_deinit(&d);
 }
