@@ -1,5 +1,3 @@
-* rename cslab to slab
-* bench vector/deque for freelist in slab
 * use deque to build slab alloc?
 * add cset
 * add cstream

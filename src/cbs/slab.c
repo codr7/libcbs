@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "cbs/slab.h"
 
-struct cslab {
+struct slab {
   struct clist list;
   uint8_t slots[];
 };
@@ -17,7 +17,7 @@ struct cslab_alloc *cslab_alloc_init(struct cslab_alloc *a, size_t slot_count, s
 
 struct cslab_alloc *cslab_alloc_deinit(struct cslab_alloc *a) {
   CLIST_DO(&a->slabs, sl) {
-    struct cslab *s = CBASEOF(sl, struct cslab, list);
+    struct slab *s = CBASEOF(sl, struct slab, list);
     free(s);
   }
 
@@ -25,21 +25,21 @@ struct cslab_alloc *cslab_alloc_deinit(struct cslab_alloc *a) {
   return a;
 }
 
-static struct cslab *cslab_get(struct cslab_alloc *a) {
+static struct slab *get_slab(struct cslab_alloc *a) {
   if (a->i == a->slot_count) {
-    struct cslab *s = malloc(sizeof(struct cslab) + a->slot_size * a->slot_count);
+    struct slab *s = malloc(sizeof(struct slab) + a->slot_size * a->slot_count);
     clist_push_back(&a->slabs, &s->list);
     a->i = 0;
     return s;
   }
 
-  return CBASEOF(a->slabs.prev, struct cslab, list);
+  return CBASEOF(a->slabs.prev, struct slab, list);
 }
 
 void *cslab_malloc(struct cslab_alloc *a) {
   return a->free_slots.length
     ? *(uint8_t **)cvector_pop(&a->free_slots)
-    : cslab_get(a)->slots + a->i++ * a->slot_size;
+    : get_slab(a)->slots + a->i++ * a->slot_size;
 }
 
 void cslab_free(struct cslab_alloc *a, void *p) {
