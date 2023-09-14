@@ -20,6 +20,11 @@ struct clist *clist_pop_front(struct clist *l) {
   return (it == l) ? NULL : clist_delete(it);
 }
 
+struct clist *clist_peek_front(struct clist *l) {
+  struct clist *it = l->next;
+  return (it == l) ? NULL : it;
+}
+
 void clist_push_back(struct clist *l, struct clist *it) {
   it->prev = l->prev;
   l->prev->next = it;
@@ -30,4 +35,9 @@ void clist_push_back(struct clist *l, struct clist *it) {
 struct clist *clist_pop_back(struct clist *l) {
   struct clist *it = l->prev;
   return (it == l) ? NULL : clist_delete(it);
+}
+
+struct clist *clist_peek_back(struct clist *l) {
+  struct clist *it = l->prev;
+  return (it == l) ? NULL : it;
 }

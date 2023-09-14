@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(libcbs)
-add_compile_options(-std=c11 -Wall -Werror)
+add_compile_options(-std=c11 -Wall -Werror -Wno-unused-function)
 
 file(GLOB_RECURSE src src/cbs/*.c)
 

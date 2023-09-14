@@ -20,8 +20,10 @@ struct clist *clist_delete(struct clist *l);
 
 void clist_push_front(struct clist *l, struct clist *it);
 struct clist *clist_pop_front(struct clist *l);
+struct clist *clist_peek_front(struct clist *l);
 
 void clist_push_back(struct clist *l, struct clist *it);
 struct clist *clist_pop_back(struct clist *l);
+struct clist *clist_peek_back(struct clist *l);
 
 #endif

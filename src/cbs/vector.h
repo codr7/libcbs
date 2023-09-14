@@ -21,7 +21,7 @@ struct cvector {
   uint8_t *items, *start, *end;
 };
 
-struct cvector *cvector_init(struct cvector *v, size_t size);
+struct cvector *cvector_init(struct cvector *v, size_t item_size);
 void cvector_deinit(struct cvector *v);
 void cvector_grow(struct cvector *v, size_t capacity);
 void cvector_clear(struct cvector *v);

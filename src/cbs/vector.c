@@ -16,7 +16,7 @@ void cvector_deinit(struct cvector *v) {
 
 void cvector_grow(struct cvector *v, size_t capacity) {
   v->capacity = capacity ? capacity : 2;
-  v->items = realloc(v->items, v->item_size*(v->capacity+1));
+  v->items = realloc(v->items, CALIGN(v->item_size*(v->capacity+1), v->item_size));
   v->start = CALIGN(v->items, v->item_size);
   v->end = v->start + v->item_size*v->length;
 }
