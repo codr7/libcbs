@@ -1,3 +1,5 @@
+* add CDEQUE_DO
+** update readme
 * add vector docs
 * add cset
 * add cstream
