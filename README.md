@@ -31,7 +31,7 @@ Lists are of the double linked, embedded kind.
 ```
 
 ## deques
-Deques allow efficient pushing and popping to both ends by allocating memory in linked blocks of user defined size. Compared to vectors; random access is slightly slower and memory locality worse due to following pointers at block boundaries; on the other hand, pointers to values are stable while pushing.
+Deques are value based and allow efficient pushing and popping to both ends by allocating memory in linked blocks. Compared to vectors; random access is slightly slower and memory locality worse due to following pointers at block boundaries; on the other hand, pointers to values are stable while pushing.
 
 ```
   #include <cbs/deque.h>
