@@ -3,7 +3,7 @@
 
 #include <stdarg.h>
 
-char *cstrdup(const char *in);
 char *cformat_va(const char *spec, va_list args);
+char *cstrdup(const char *in);
 
 #endif

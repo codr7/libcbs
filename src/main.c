@@ -6,6 +6,7 @@
 #include "cbs/deque.h"
 #include "cbs/fail.h"
 #include "cbs/slab.h"
+#include "cbs/slog.h"
 #include "cbs/timer.h"
 
 static void deque_test() {
@@ -57,6 +58,13 @@ static void slab_test() {
   cslab_alloc_deinit(&a);
 }
 
+static void slog_test() {
+  struct cslog s;
+  cslog_init(&s, stdout, CSLOG_TEXT);
+  CSLOG(&s, "hello slog", cslog_int("int", 42));
+  cslog_deinit(&s);
+}
+
 #define SLAB_BENCH_MAX 1000000
 
 static void slab_bench() {
@@ -91,6 +99,7 @@ int main() {
   deque_test();
   fail_test();
   slab_test();
-
+  slog_test();
+  
   slab_bench();
 }

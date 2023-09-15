@@ -1,20 +1,13 @@
 #include <errno.h>
-#include "cbs/fail.h"
 #include "cbs/timer.h"
-
-static void ctime_get(struct timespec *ts) {
-  if (!timespec_get(ts, TIME_UTC)) {
-    CPUSH_ERROR(0, "Failed getting time: %d", errno);
-  }
-}
+#include "cbs/time.h"
 
 void ctimer_reset(struct ctimer *t) {
-  ctime_get(&t->start);
+  t->start = cnow();
 }
 
 uint64_t ctimer_ms(const struct ctimer *t) {
-  struct timespec end;
-  ctime_get(&end);
+  const struct timespec end = cnow();
 
   return
     (end.tv_sec - t->start.tv_sec) * 1000000 +
