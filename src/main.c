@@ -42,6 +42,30 @@ static void fail_test() {
   free(cerror_deinit(e));
 }
 
+struct list_item {
+  struct clist list;
+  int value;
+};
+  
+static void list_test() {
+  struct clist head;
+  clist_init(&head);
+
+  const int n = 10;
+  struct list_item items[n];
+  
+  for (int i = 0; i < n; i++) {
+    items[i].value = i;
+    clist_push_back(&head, &items[i].list);
+  }
+
+  int i = 0;
+  
+  CLIST_DO(&head, il) {
+    assert(CBASEOF(il, struct list_item, list)->value == i++);
+  }
+}
+
 static void slab_test() {
   struct cslab_alloc a;
   cslab_alloc_init(&a, 64, sizeof(int));
@@ -98,6 +122,7 @@ static void slab_bench() {
 int main() {
   deque_test();
   fail_test();
+  list_test();
   slab_test();
   slog_test();
   
