@@ -6,7 +6,12 @@ Lists are of the double linked, embedded kind.
 
 ```
   #include <cbs/list.h>
-  
+
+  struct list_item {
+    struct clist list;
+    int value;
+  };
+
   struct clist head;
   clist_init(&head);
 
