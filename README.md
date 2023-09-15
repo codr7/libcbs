@@ -5,6 +5,8 @@ libcbs is a library of basic C utilities.
 Lists are of the double linked, embedded kind.
 
 ```
+  #include <cbs/list.h>
+  
   struct clist head;
   clist_init(&head);
 
@@ -25,6 +27,24 @@ Lists are of the double linked, embedded kind.
 
 ## deques
 Deques allow efficient pushing and popping to both ends by allocating memory in linked blocks of user defined size. Compared to vectors; random access is slightly slower and memory locality worse due to following pointers at block boundaries; on the other hand, pointers to values are stable while pushing.
+
+```
+  #include <cbs/deque.h>
+  
+  struct cdeque d;
+  cdeque_init(&d, 2, sizeof(int));
+  const int n = 20;
+
+  for (int i = n/2-1; i >= 0; i--) { *(int *)cdeque_push_front(&d) = i; }
+  assert(d.length == n/2);
+
+  for (int i = n/2; i < n; i++) { *(int *)cdeque_push_back(&d) = i; }
+  assert(d.length == n);
+
+  for (int i = 0; i < n; i++) { assert(*(int *)cdeque_get(&d, i) == i); }
+
+  cdeque_deinit(&d);
+```
 
 ## structured logging
 

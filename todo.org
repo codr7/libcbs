@@ -1,8 +1,7 @@
+* add vector docs
 * add cset
 * add cstream
 * add ctree
-* add cstring
-** utf8
 
 28832ms
 9090ms
