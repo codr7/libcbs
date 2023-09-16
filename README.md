@@ -1,8 +1,23 @@
 # intro
 libcbs is a library of basic C utilities.
 
+## dependencies
+The only dependency is a C2X compiler and standard library.
+
+## setup
+The following script builds both static and dynamic versions of the library and runs the test suite.
+
+```
+git clone https://github.com/codr7/libcbs.git
+cd libcbs
+mkdir build
+cd build
+make
+./test
+```
+
 ## lists
-Lists are of the double linked, embedded kind.
+Lists are double linked and embedded. Think of them as the easiest and cheapest way to string together a sequence of values. Since the links are embedded in the items, it's easy to get good memory locality and avoid extra allocations. And because they are double linked, deletion is O(1) and only requires access to the item. One limitation to keep in mind is that you need to embed separate links for every list that an item is going to be a member of simultaneously.
 
 ```
   #include <cbs/list.h>
@@ -31,7 +46,7 @@ Lists are of the double linked, embedded kind.
 ```
 
 ## deques
-Deques are value based and allow efficient pushing and popping to both ends by allocating memory in linked blocks. Compared to vectors; random access is slightly slower and memory locality worse due to following pointers at block boundaries; on the other hand, pointers to values are stable while pushing.
+Deques are value based and allow efficient pushing and popping to both ends by allocating memory in linked blocks. Compared to vectors; random access is slightly slower and memory locality worse due to pointer traversal at block boundaries; on the other hand, pointers to values are stable while pushing.
 
 ```
   #include <cbs/deque.h>

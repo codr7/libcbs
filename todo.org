@@ -1,6 +1,8 @@
 * add CDEQUE_DO
 ** update readme
-* add vector docs
+* add vector test/docs
+* extract slog field format
+** replace enum with typedef/functions
 * add cset
 * add cstream
 * add ctree
