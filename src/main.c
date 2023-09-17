@@ -5,7 +5,7 @@
 #include <string.h>
 #include "cbs/deque.h"
 #include "cbs/fail.h"
-#include "cbs/slab.h"
+#include "cbs/malloc.h"
 #include "cbs/slog.h"
 #include "cbs/timer.h"
 
@@ -66,20 +66,20 @@ static void list_test() {
   }
 }
 
-static void slab_test() {
-  struct cslab_alloc a;
-  cslab_alloc_init(&a, 64, sizeof(int));
+static void malloc_test() {
+  struct cmalloc m;
+  cmalloc_init(&m, 64, sizeof(int));
 
-  int *p1 = cslab_malloc(&a);
-  int *p2 = cslab_malloc(&a);
-  cslab_free(&a, p1);
-  cslab_free(&a, p2);
-  int *p3 = cslab_malloc(&a);
+  int *p1 = cmalloc_acquire(&m);
+  int *p2 = cmalloc_acquire(&m);
+  cmalloc_release(&m, p1);
+  cmalloc_release(&m, p2);
+  int *p3 = cmalloc_acquire(&m);
   assert(p3 == p2);
-  p3 = cslab_malloc(&a);
+  p3 = cmalloc_acquire(&m);
   assert(p3 == p1);
 
-  cslab_alloc_deinit(&a);
+  cmalloc_deinit(&m);
 }
 
 static void slog_test() {
@@ -89,42 +89,42 @@ static void slog_test() {
   cslog_deinit(&s);
 }
 
-#define SLAB_BENCH_MAX 1000000
+#define MALLOC_BENCH_MAX 1000000
 
-static void slab_bench() {
-  static int *ps[SLAB_BENCH_MAX];
+static void malloc_bench() {
+  static int *ps[MALLOC_BENCH_MAX];
 
-  struct cslab_alloc a;
-  cslab_alloc_init(&a, 64, sizeof(int));
+  struct cmalloc m;
+  cmalloc_init(&m, 64, sizeof(int));
 
   struct ctimer t;
   ctimer_reset(&t);
   
-  for (int i = 0; i < SLAB_BENCH_MAX; i++) {
+  for (int i = 0; i < MALLOC_BENCH_MAX; i++) {
     ps[i] = malloc(sizeof(int));
     *ps[i] = i;
   }
 
-  for (int i = 0; i < SLAB_BENCH_MAX; i++) { free(ps[i]); }
+  for (int i = 0; i < MALLOC_BENCH_MAX; i++) { free(ps[i]); }
   printf("%" PRIu64 "ms\n", ctimer_ms(&t));
   ctimer_reset(&t);
   
-  for (int i = 0; i < SLAB_BENCH_MAX; i++) {
-    ps[i] = cslab_malloc(&a);
+  for (int i = 0; i < MALLOC_BENCH_MAX; i++) {
+    ps[i] = cmalloc_acquire(&m);
     *ps[i] = i;
   }
 
-  for (int i = 0; i < SLAB_BENCH_MAX; i++) { cslab_free(&a, ps[i]); }
+  for (int i = 0; i < MALLOC_BENCH_MAX; i++) { cmalloc_release(&m, ps[i]); }
   printf("%" PRIu64 "ms\n", ctimer_ms(&t));
-  cslab_alloc_deinit(&a);
+  cmalloc_deinit(&m);
 }
 
 int main() {
   deque_test();
   fail_test();
   list_test();
-  slab_test();
+  malloc_test();
   slog_test();
   
-  slab_bench();
+  malloc_bench();
 }

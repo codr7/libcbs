@@ -66,6 +66,25 @@ Deques are value based and allow efficient pushing and popping to both ends by a
   cdeque_deinit(&d);
 ```
 
+## slab allocation
+`cmalloc` implements a slab memory allocator with integrated free list. Slab allocators are useful for allocating many small objects of the same size; providing better memory locality and less fragmentation, which usually leads to better performance.
+
+```
+  struct cmalloc m;
+  cmalloc_init(&m, 64, sizeof(int));
+
+  int *p1 = cmalloc_acquire(&m);
+  int *p2 = cmalloc_acquire(&m);
+  cmalloc_release(&m, p1);
+  cmalloc_release(&m, p2);
+  int *p3 = cmalloc_acquire(&m);
+  assert(p3 == p2);
+  p3 = cmalloc_acquire(&m);
+  assert(p3 == p1);
+
+  cmalloc_deinit(&m);
+```
+
 ## structured logging
 
 ```
